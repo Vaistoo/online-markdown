@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { FolderPlusIcon, FolderMinusIcon } from 'svelte-feather-icons';
 	import File from './file.svelte';
+
+	import { contextmenuSelectedNote } from './store/contextmenuSelectedNote';
 	import { iconSize } from './store/iconSize';
 
 	import type { FileStructure } from './types/filestructure';
@@ -23,7 +25,7 @@
 
 		<ul>
 			{#each files as file}
-				<li>
+				<li on:contextmenu|capture={() => contextmenuSelectedNote.set(file.key.toString())}>
 					{#if file.files}
 						<svelte:self {...file} />
 					{:else}

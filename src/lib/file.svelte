@@ -15,7 +15,7 @@
 
 <span class="flex items-center align-middle" on:click={() => select(file)}>
 	<FileTextIcon size={$iconSize} />
-	<span class="filename">{file.name}</span>
+	<span id={file.key.toString()} class="filename">{file.name}</span>
 </span>
 
 <style lang="postcss">

@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
-
-	import clickOutside from 'svelte-outside-click';
-	import { FilePlusIcon, DeleteIcon, Edit3Icon, FolderPlusIcon } from 'svelte-feather-icons';
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
+	import { FilePlusIcon, DeleteIcon, Edit3Icon, FolderPlusIcon } from 'svelte-feather-icons';
+	import clickOutside from 'svelte-outside-click';
+
+	import { contextmenuSelectedNote } from './store/contextmenuSelectedNote';
+	import { addNote } from './helpers/addNote';
 
 	export let showMenu: boolean = false;
 	let clientX: number;
@@ -27,13 +29,16 @@
 	<div
 		class="absolute flex-col bg-zinc-800 border-[2px] border-zinc-700 rounded-lg divide-y-2 divide-zinc-600 overflow-hidden shadow-xl z-[1000]"
 		style="top: {clientY}px; left: {clientX}px;"
-		on:click={closeMenu}
 		use:clickOutside={closeMenu}
 	>
 		<div>
 			<div
 				transition:fade={{ duration: 100 }}
 				class="flex hover:bg-gray-600 cursor-pointer px-4 py-1 items-center"
+				on:click={() => {
+					addNote($contextmenuSelectedNote);
+					closeMenu();
+				}}
 			>
 				<FilePlusIcon size="20" />
 				<span class="pl-3">New file</span>

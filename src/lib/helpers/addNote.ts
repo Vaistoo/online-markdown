@@ -6,15 +6,58 @@ import { notes } from '../store/notes';
 
 import type { MarkdownFile } from '../types/markdownfile';
 import type { FileStructure } from '../types/filestructure';
+import { findPath } from './findpath';
+import type { Folder } from '../types/folder';
+import { contextmenuSelectedNote } from '../store/contextmenuSelectedNote';
 
-export function addNote(pathToNote: string) {
-	const _notes: FileStructure = get(notes);
+export function addNote(key: string) {
+	let _notes: FileStructure = get(notes);
+	const pathToSelectedItem: string = findPath(_notes, 'key', key);
+
 	const newNote: MarkdownFile = {
 		key: uuidv4(),
 		name: 'New Note!',
 		md: '# New Note!'
 	};
 
-	nestedProperty.set(_notes, pathToNote, newNote);
-	notes.set(_notes);
+	// add file to base of structure
+	if (!key || (!isNaN(Number(pathToSelectedItem)) && !_notes[Number(pathToSelectedItem)]?.files)) {
+		notes.set([..._notes, newNote]);
+		contextmenuSelectedNote.set('');
+		return;
+	}
+
+	// handle if user clicked a folder
+	if (key && nestedProperty.get(_notes, pathToSelectedItem)?.files) {
+		const selectedItem: MarkdownFile | Folder = nestedProperty.get(_notes, pathToSelectedItem);
+
+		(<Folder>selectedItem).files = [...(<Folder>selectedItem).files, newNote];
+
+		nestedProperty.set(_notes, pathToSelectedItem, selectedItem);
+		notes.set(_notes);
+		contextmenuSelectedNote.set('');
+		return;
+	}
+
+	// handle if user clicked a file
+	try {
+		const pathToParentFolder: string = pathToSelectedItem.substring(
+			0,
+			pathToSelectedItem.lastIndexOf('.files')
+		);
+		const parentFolder: Folder = nestedProperty.get(_notes, pathToParentFolder);
+
+		console.log(pathToSelectedItem);
+		console.log(pathToParentFolder);
+
+		nestedProperty.set(_notes, pathToParentFolder, {
+			...parentFolder,
+			files: [...parentFolder.files, newNote]
+		});
+
+		notes.set(_notes);
+		contextmenuSelectedNote.set('');
+	} catch {
+		console.log('uh oh spaghettio!');
+	}
 }
