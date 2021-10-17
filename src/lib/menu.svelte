@@ -5,7 +5,7 @@
 	import clickOutside from 'svelte-outside-click';
 
 	import { contextmenuSelectedNote } from './store/contextmenuSelectedNote';
-	import { addNote } from './helpers/addNote';
+	import { addNote, addFolder } from './helpers/file-structure/add';
 
 	export let showMenu: boolean = false;
 	let clientX: number;
@@ -62,6 +62,10 @@
 			<div
 				transition:fade={{ duration: 100 }}
 				class="flex hover:bg-gray-600 cursor-pointer px-4 py-1 items-center"
+				on:click={() => {
+					addFolder($contextmenuSelectedNote);
+					closeMenu();
+				}}
 			>
 				<FolderPlusIcon size="20" />
 				<span class="pl-3">New folder</span>
