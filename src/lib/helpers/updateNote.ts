@@ -2,13 +2,13 @@ import nestedProperty from 'nested-property';
 import { findPath } from './findpath';
 
 import { get } from 'svelte/store';
-import { notes } from '../store/notes';
+import { files } from '../store/files';
 
 import type { MarkdownFile } from '../types/markdownfile';
 import type { FileStructure } from '../types/filestructure';
 
 export function updateNote(key: string, md: string) {
-	const _notes: FileStructure = get(notes);
+	const _notes: FileStructure = get(files);
 	const pathToNote: string = findPath(_notes, 'key', key);
 
 	if (pathToNote) {
@@ -19,7 +19,7 @@ export function updateNote(key: string, md: string) {
 		};
 
 		nestedProperty.set(_notes, pathToNote, updatedNote);
-		notes.set(_notes);
+		files.set(_notes);
 	} else {
 		console.log('uh oh spaghettio');
 	}

@@ -2,7 +2,7 @@ import nestedProperty from 'nested-property';
 import { v4 as uuidv4 } from 'uuid';
 
 import { get } from 'svelte/store';
-import { notes } from '../store/notes';
+import { files } from '../store/files';
 
 import type { MarkdownFile } from '../types/markdownfile';
 import type { FileStructure } from '../types/filestructure';
@@ -11,7 +11,7 @@ import type { Folder } from '../types/folder';
 import { contextmenuSelectedNote } from '../store/contextmenuSelectedNote';
 
 export function addNote(key: string) {
-	let _notes: FileStructure = get(notes);
+	let _notes: FileStructure = get(files);
 	const pathToSelectedItem: string = findPath(_notes, 'key', key);
 
 	const newNote: MarkdownFile = {
@@ -22,7 +22,7 @@ export function addNote(key: string) {
 
 	// add file to base of structure
 	if (!key || (!isNaN(Number(pathToSelectedItem)) && !_notes[Number(pathToSelectedItem)]?.files)) {
-		notes.set([..._notes, newNote]);
+		files.set([..._notes, newNote]);
 		contextmenuSelectedNote.set('');
 		return;
 	}
@@ -34,7 +34,7 @@ export function addNote(key: string) {
 		(<Folder>selectedItem).files = [...(<Folder>selectedItem).files, newNote];
 
 		nestedProperty.set(_notes, pathToSelectedItem, selectedItem);
-		notes.set(_notes);
+		files.set(_notes);
 		contextmenuSelectedNote.set('');
 		return;
 	}
@@ -47,15 +47,12 @@ export function addNote(key: string) {
 		);
 		const parentFolder: Folder = nestedProperty.get(_notes, pathToParentFolder);
 
-		console.log(pathToSelectedItem);
-		console.log(pathToParentFolder);
-
 		nestedProperty.set(_notes, pathToParentFolder, {
 			...parentFolder,
 			files: [...parentFolder.files, newNote]
 		});
 
-		notes.set(_notes);
+		files.set(_notes);
 		contextmenuSelectedNote.set('');
 	} catch {
 		console.log('uh oh spaghettio!');

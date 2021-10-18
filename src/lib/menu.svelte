@@ -36,7 +36,7 @@
 				transition:fade={{ duration: 100 }}
 				class="flex hover:bg-gray-600 cursor-pointer px-4 py-1 items-center"
 				on:click={() => {
-					addNote($contextmenuSelectedNote);
+					addNote();
 					closeMenu();
 				}}
 			>
@@ -63,7 +63,7 @@
 				transition:fade={{ duration: 100 }}
 				class="flex hover:bg-gray-600 cursor-pointer px-4 py-1 items-center"
 				on:click={() => {
-					addFolder($contextmenuSelectedNote);
+					addFolder();
 					closeMenu();
 				}}
 			>

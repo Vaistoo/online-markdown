@@ -6,10 +6,12 @@
 	import { iconSize } from './store/iconSize';
 
 	import type { FileStructure } from './types/filestructure';
+	import type { Folder } from './types/folder';
+
+	export let folder: Folder;
+	export let files: FileStructure;
 
 	export let expanded = false;
-	export let name: string;
-	export let files: FileStructure;
 
 	function toggle() {
 		expanded = !expanded;
@@ -18,16 +20,16 @@
 
 <div>
 	{#if expanded}
-		<span on:click={toggle}>
+		<span on:click={toggle} on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}>
 			<FolderMinusIcon size={$iconSize} />
-			<span class="folder-name">{name}</span>
+			<span class="folder-name">{folder.name}</span>
 		</span>
 
 		<ul>
 			{#each files as file}
-				<li on:contextmenu|capture={() => contextmenuSelectedNote.set(file.key.toString())}>
+				<li>
 					{#if file.files}
-						<svelte:self {...file} />
+						<svelte:self folder={file} files={file.files} />
 					{:else}
 						<File {file} />
 					{/if}
@@ -35,9 +37,9 @@
 			{/each}
 		</ul>
 	{:else}
-		<span on:click={toggle}>
+		<span on:click={toggle} on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}>
 			<FolderPlusIcon size={$iconSize} />
-			<span class="folder-name">{name}</span>
+			<span class="folder-name">{folder.name}</span>
 		</span>
 	{/if}
 </div>

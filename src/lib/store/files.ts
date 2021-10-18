@@ -44,4 +44,4 @@ let _: FileStructure = [
 	}
 ];
 
-export const notes: Writable<FileStructure> = writable(_);
+export const files: Writable<FileStructure> = writable(_);
