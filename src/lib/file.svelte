@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { FileTextIcon } from 'svelte-feather-icons';
 	import { contextmenuSelectedNote } from './store/contextmenuSelectedNote';
-
 	import { iconSize } from './store/iconSize';
 	import { selectedNote } from './store/selectedNote';
-
+	import Rename from './rename.svelte';
 	import type { MarkdownFile } from './types/markdownfile';
 
 	export let file: MarkdownFile;
@@ -12,6 +11,8 @@
 	function select(file: MarkdownFile) {
 		selectedNote.set(file);
 	}
+
+	let rename: boolean = false;
 </script>
 
 <span
@@ -21,7 +22,11 @@
 	on:contextmenu={() => contextmenuSelectedNote.set(file.key)}
 >
 	<FileTextIcon size={$iconSize} />
-	<span id={file.key.toString()} class="filename">{file.name}</span>
+
+	<Rename bind:rename key={file.key} />
+	{#if !rename}
+		<span class="filename">{file.name}</span>
+	{/if}
 </span>
 
 <style lang="postcss">

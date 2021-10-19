@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { FolderPlusIcon, FolderMinusIcon } from 'svelte-feather-icons';
 	import File from './file.svelte';
-
 	import { contextmenuSelectedNote } from './store/contextmenuSelectedNote';
 	import { iconSize } from './store/iconSize';
-
+	import Rename from './rename.svelte';
 	import type { FileStructure } from './types/filestructure';
 	import type { Folder } from './types/folder';
 
@@ -12,23 +11,32 @@
 	export let files: FileStructure;
 
 	export let expanded = false;
-
 	function toggle() {
 		expanded = !expanded;
 	}
+
+	let rename: boolean = false;
 </script>
 
 <div>
-	{#if expanded}
-		<span
-			class="py-1 pl-2 hover:bg-zinc-700"
-			on:click={toggle}
-			on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}
-		>
+	<span
+		class="py-1 pl-2 hover:bg-zinc-700"
+		on:click={toggle}
+		on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}
+	>
+		{#if expanded}
 			<FolderMinusIcon size={$iconSize} />
-			<span class="folder-name">{folder.name}</span>
-		</span>
+		{:else}
+			<FolderPlusIcon size={$iconSize} />
+		{/if}
 
+		<Rename bind:rename key={folder.key} />
+		{#if !rename}
+			<span class="folder-name">{folder.name}</span>
+		{/if}
+	</span>
+
+	{#if expanded}
 		<ul>
 			{#each files as file}
 				<li>
@@ -40,15 +48,6 @@
 				</li>
 			{/each}
 		</ul>
-	{:else}
-		<span
-			class="py-1 pl-2 hover:bg-zinc-700"
-			on:click={toggle}
-			on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}
-		>
-			<FolderPlusIcon size={$iconSize} />
-			<span class="folder-name">{folder.name}</span>
-		</span>
 	{/if}
 </div>
 

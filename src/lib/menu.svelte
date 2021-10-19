@@ -5,6 +5,7 @@
 	import clickOutside from 'svelte-outside-click';
 
 	import { contextmenuSelectedNote } from './store/contextmenuSelectedNote';
+	import { renameSelectedNote } from './store/renameSelectedNote';
 	import { addNote, addFolder } from './helpers/file-structure/add';
 
 	export let showMenu: boolean = false;
@@ -34,7 +35,7 @@
 	>
 		<div>
 			<div
-				class="flex hover:bg-gray-600 cursor-pointer px-4 py-1 items-center"
+				class="menu-item"
 				on:click={() => {
 					addNote();
 					closeMenu();
@@ -44,7 +45,7 @@
 				<span class="pl-3">New file</span>
 			</div>
 			<div
-				class="flex hover:bg-gray-600 cursor-pointer px-4 py-1 items-center"
+				class="menu-item"
 				on:click={() => {
 					addFolder();
 					closeMenu();
@@ -56,11 +57,17 @@
 		</div>
 		{#if $contextmenuSelectedNote}
 			<div>
-				<div class="flex hover:bg-gray-600 cursor-pointer px-4 py-1 items-center">
+				<div
+					class="menu-item"
+					on:click={() => {
+						renameSelectedNote.set($contextmenuSelectedNote);
+						closeMenu();
+					}}
+				>
 					<Edit3Icon size="20" />
 					<span class="pl-3">Rename</span>
 				</div>
-				<div class="flex hover:bg-gray-600 cursor-pointer px-4 py-1 items-center">
+				<div class="menu-item">
 					<DeleteIcon size="20" />
 					<span class="pl-3">Delete</span>
 				</div>
@@ -68,3 +75,9 @@
 		{/if}
 	</div>
 {/if}
+
+<style lang="postcss">
+	.menu-item {
+		@apply flex hover:bg-gray-600 cursor-pointer px-4 py-1 items-center;
+	}
+</style>
