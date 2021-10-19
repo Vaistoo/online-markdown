@@ -15,7 +15,8 @@
 </script>
 
 <span
-	class="flex items-center align-middle"
+	class:selected={file.key === $selectedNote?.key}
+	class="flex items-center align-middle hover:underline"
 	on:click={() => select(file)}
 	on:contextmenu={() => contextmenuSelectedNote.set(file.key)}
 >
@@ -26,5 +27,9 @@
 <style lang="postcss">
 	.filename {
 		@apply pl-1;
+	}
+
+	.selected {
+		@apply underline;
 	}
 </style>

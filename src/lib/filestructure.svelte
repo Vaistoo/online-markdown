@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { set } from 'nested-property';
 	import File from './file.svelte';
 	import Folder from './folder.svelte';
 

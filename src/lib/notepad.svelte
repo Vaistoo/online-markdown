@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import MarkdownIt from 'markdown-it';
 	import hljs from 'highlight.js';
 	import 'highlight.js/styles/a11y-dark.css';
 
@@ -36,7 +37,7 @@
 	function render(md) {
 		if (mounted) {
 			// @ts-ignore
-			const MarkdownIt = window.markdownit('commonmark', {
+			const _ = MarkdownIt('commonmark', {
 				highlight: function (str, lang) {
 					if (lang && hljs.getLanguage(lang)) {
 						try {
@@ -47,7 +48,7 @@
 					return ''; // use external default escaping
 				}
 			});
-			renderArea.innerHTML = MarkdownIt.render(md);
+			renderArea.innerHTML = _.render(md);
 		}
 	}
 
@@ -59,10 +60,6 @@
 
 	$: render(md);
 </script>
-
-<svelte:head>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.2.0/markdown-it.js"></script>
-</svelte:head>
 
 <div class="flex fex-col w-full bg-zinc-900 justify-center p-5">
 	<div class="notepad markdown-body" bind:this={renderArea} on:click={focusEditor} />
