@@ -33,8 +33,12 @@ export function addFolder() {
 
 function _add(newNode: Folder | MarkdownFile) {
 	let _notes: FileStructure = get(files);
-	const pathToSelectedItem: string = findPath(_notes, 'key', get(contextmenuSelectedNote));
-	const selectedItem: MarkdownFile | Folder = nestedProperty.get(_notes, pathToSelectedItem);
+	const pathToSelectedItem: string = get(contextmenuSelectedNote)
+		? findPath(_notes, 'key', get(contextmenuSelectedNote))
+		: '';
+	const selectedItem: MarkdownFile | Folder = pathToSelectedItem
+		? nestedProperty.get(_notes, pathToSelectedItem)
+		: '';
 
 	// handle right click from a folder
 	if (selectedItem && selectedItem.hasOwnProperty('files')) {

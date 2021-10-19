@@ -1,36 +1,25 @@
 export const findPath = (ob, key, value) => {
-	const path = [];
-	const keyExists = (obj) => {
-		if (!obj || (typeof obj !== 'object' && !Array.isArray(obj))) {
-			return false;
-		} else if (obj.hasOwnProperty(key) && obj[key] === value) {
-			return true;
-		} else if (Array.isArray(obj)) {
-			let parentKey = path.length ? path.pop() : '';
+	function findPath(obj, name, val, currentPath = '') {
+		currentPath = currentPath || '';
 
-			for (let i = 0; i < obj.length; i++) {
-				path.push(`${parentKey}[${i}]`);
-				const result = keyExists(obj[i], key);
-				if (result) {
-					return result;
-				}
-				path.pop();
+		let matchingPath;
+
+		if (!obj || typeof obj !== 'object') return;
+
+		if (obj[name] === val) return currentPath;
+
+		for (const key of Object.keys(obj)) {
+			if (key === name && obj[key] === val) {
+				matchingPath = currentPath;
+			} else {
+				matchingPath = findPath(obj[key], name, val, `${currentPath}.${key}`);
 			}
-		} else {
-			for (const k in obj) {
-				path.push(k);
-				const result = keyExists(obj[k], key);
-				if (result) {
-					return result;
-				}
-				path.pop();
-			}
+
+			if (matchingPath) break;
 		}
 
-		return false;
-	};
+		return matchingPath;
+	}
 
-	keyExists(ob);
-
-	return path.join('.').replace('[', '').replaceAll('[', '.').replaceAll(']', '');
+	return findPath(ob, key, value).replace('.', '');
 };
