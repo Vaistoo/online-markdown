@@ -32,10 +32,9 @@ export function addFolder() {
 }
 
 function _add(newNode: Folder | MarkdownFile) {
-	let _notes: FileStructure = get(files);
-	const pathToSelectedItem: string = get(contextmenuSelectedNote)
-		? findPath(_notes, 'key', get(contextmenuSelectedNote))
-		: '';
+	const _notes: FileStructure = get(files);
+	const selectedKey: string = get(contextmenuSelectedNote);
+	const pathToSelectedItem: string = selectedKey ? findPath(_notes, 'key', selectedKey) : '';
 	const selectedItem: MarkdownFile | Folder = pathToSelectedItem
 		? nestedProperty.get(_notes, pathToSelectedItem)
 		: '';
@@ -51,10 +50,7 @@ function _add(newNode: Folder | MarkdownFile) {
 	}
 
 	// handle add node to base of structure
-	if (
-		!get(contextmenuSelectedNote) ||
-		(get(contextmenuSelectedNote) && !isNaN(Number(pathToSelectedItem)))
-	) {
+	if (!selectedKey || (selectedKey && !isNaN(Number(pathToSelectedItem)))) {
 		files.set([..._notes, newNode]);
 		contextmenuSelectedNote.set('');
 		return;
