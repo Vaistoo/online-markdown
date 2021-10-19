@@ -1,4 +1,4 @@
-export default function contextMenuOutside(node, onEventFunction) {
+export default function contextmenuOutside(node, onEventFunction) {
 	const handleClick = (event) => {
 		var path = event.composedPath();
 
