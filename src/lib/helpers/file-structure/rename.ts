@@ -1,5 +1,4 @@
 import nestedProperty from 'nested-property';
-import { v4 as uuidv4 } from 'uuid';
 
 import { get } from 'svelte/store';
 import { files } from '../../store/files';
@@ -12,18 +11,21 @@ import type { Folder } from 'src/lib/types/folder';
 import type { FileStructure } from 'src/lib/types/filestructure';
 
 export function rename(name: string) {
-	let _notes: FileStructure = get(files);
-	const pathToSelectedItem: string = findPath(_notes, 'key', get(contextmenuSelectedNote));
-	const selectedItem: MarkdownFile | Folder = nestedProperty.get(_notes, pathToSelectedItem);
+	const _files: FileStructure = get(files);
+	const selectedKey: string = get(contextmenuSelectedNote);
+	const pathToSelectedItem: string = selectedKey ? findPath(_files, 'key', selectedKey) : '';
+	const selectedItem: MarkdownFile | Folder = pathToSelectedItem
+		? nestedProperty.get(_files, pathToSelectedItem)
+		: '';
 
 	if (selectedItem) {
 		const newNode = {
 			...selectedItem,
 			name
 		};
-		nestedProperty.set(_notes, pathToSelectedItem, newNode);
+		nestedProperty.set(_files, pathToSelectedItem, newNode);
 
-		files.set(_notes);
+		files.set(_files);
 		contextmenuSelectedNote.set('');
 		return;
 	}

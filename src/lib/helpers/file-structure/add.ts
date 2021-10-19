@@ -32,26 +32,26 @@ export function addFolder() {
 }
 
 function _add(newNode: Folder | MarkdownFile) {
-	const _notes: FileStructure = get(files);
+	const _files: FileStructure = get(files);
 	const selectedKey: string = get(contextmenuSelectedNote);
-	const pathToSelectedItem: string = selectedKey ? findPath(_notes, 'key', selectedKey) : '';
+	const pathToSelectedItem: string = selectedKey ? findPath(_files, 'key', selectedKey) : '';
 	const selectedItem: MarkdownFile | Folder = pathToSelectedItem
-		? nestedProperty.get(_notes, pathToSelectedItem)
+		? nestedProperty.get(_files, pathToSelectedItem)
 		: '';
 
 	// handle right click from a folder
 	if (selectedItem && selectedItem.hasOwnProperty('files')) {
 		(<Folder>selectedItem).files = [...(<Folder>selectedItem).files, newNode];
 
-		nestedProperty.set(_notes, pathToSelectedItem, selectedItem);
-		files.set(_notes);
+		nestedProperty.set(_files, pathToSelectedItem, selectedItem);
+		files.set(_files);
 		contextmenuSelectedNote.set('');
 		return;
 	}
 
 	// handle add node to base of structure
 	if (!selectedKey || (selectedKey && !isNaN(Number(pathToSelectedItem)))) {
-		files.set([..._notes, newNode]);
+		files.set([..._files, newNode]);
 		contextmenuSelectedNote.set('');
 		return;
 	}
@@ -67,18 +67,18 @@ function _add(newNode: Folder | MarkdownFile) {
 			0,
 			pathToSelectedItem.lastIndexOf('.files')
 		);
-		const parentFolder: Folder = nestedProperty.get(_notes, pathToParentFolder);
+		const parentFolder: Folder = nestedProperty.get(_files, pathToParentFolder);
 
 		parentFolder.files = [...parentFolder.files, newNode];
 
-		nestedProperty.set(_notes, pathToSelectedItem, selectedItem);
-		files.set(_notes);
+		nestedProperty.set(_files, pathToSelectedItem, selectedItem);
+		files.set(_files);
 		contextmenuSelectedNote.set('');
 		return;
 	}
 
 	// fallback
-	files.set([..._notes, newNode]);
+	files.set([..._files, newNode]);
 	contextmenuSelectedNote.set('');
 	return;
 }
