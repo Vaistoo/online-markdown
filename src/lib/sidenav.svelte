@@ -31,7 +31,7 @@
 	>
 		<Filestructure />
 	</div>
-	<div class="w-1 bg-zinc-500" style="cursor: w-resize" on:mousedown={() => (resize = true)} />
+	<div class="w-2 bg-zinc-500" style="cursor: w-resize" on:mousedown={() => (resize = true)} />
 </div>
 
 <Menu bind:showMenu />

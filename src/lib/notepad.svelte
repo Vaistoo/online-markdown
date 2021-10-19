@@ -28,6 +28,8 @@
 				updateNote($selectedNote.key, md);
 			}
 		});
+
+		initResize();
 	});
 
 	onDestroy(() => {
@@ -36,7 +38,6 @@
 
 	function render(md) {
 		if (mounted) {
-			// @ts-ignore
 			const _ = MarkdownIt('commonmark', {
 				highlight: function (str, lang) {
 					if (lang && hljs.getLanguage(lang)) {
@@ -59,21 +60,54 @@
 	}
 
 	$: render(md);
+
+	let resize: boolean = false;
+	let size: number = 600;
+
+	function initResize() {
+		addEventListener('mousemove', (e) => {
+			if (!resize) return;
+
+			const centerX: number = renderArea.offsetLeft + renderArea.offsetWidth / 2;
+
+			requestAnimationFrame(() => {
+				size = size / 2 + Math.abs(e.clientX - centerX);
+			});
+
+			addEventListener('mouseup', () => {
+				resize = false;
+			});
+		});
+	}
 </script>
 
 <div class="flex fex-col w-full bg-zinc-900 justify-center p-5">
-	<div class="notepad markdown-body" bind:this={renderArea} on:click={focusEditor} />
-	<textarea class="notepad" style="height: calc(100% - 2.5em)" bind:this={editor} bind:value={md} />
+	<div
+		class="rounded-lg shadow-xl flex fex-col justify-center bg-zinc-500 px-2"
+		style="cursor: w-resize"
+		on:mousedown={() => (resize = true)}
+	>
+		<div
+			class="markdown-body cursor-default"
+			bind:this={renderArea}
+			on:click={focusEditor}
+			on:mousedown|stopPropagation
+			style="width: {size}px"
+		/>
+		<textarea
+			class="cursor-text"
+			style="height: calc(100% - 2.5em); width: {size}px"
+			bind:this={editor}
+			bind:value={md}
+		/>
+	</div>
 </div>
 
 <style lang="postcss">
-	.notepad {
-		@apply rounded-lg shadow-xl;
-	}
 	textarea {
-		@apply p-5 w-[35em] overflow-auto absolute z-0 resize-none bg-transparent text-transparent outline-none focus:bg-zinc-800 focus:text-gray-50 focus:z-20;
+		@apply p-5 overflow-auto absolute z-0 resize-none bg-transparent text-transparent outline-none focus:bg-zinc-800 focus:text-gray-50 focus:z-20;
 	}
 	.markdown-body {
-		@apply p-5 w-[35em] overflow-auto bg-zinc-800 h-full z-10 select-none;
+		@apply p-5 overflow-auto bg-zinc-800 h-full z-10 select-none;
 	}
 </style>
