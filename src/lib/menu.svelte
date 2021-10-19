@@ -6,6 +6,7 @@
 	import { contextmenuSelectedNote } from './store/contextmenuSelectedNote';
 	import { renameSelectedNote } from './store/renameSelectedNote';
 	import { addNote, addFolder } from './helpers/file-structure/add';
+	import { remove } from './helpers/file-structure/remove';
 
 	export let showMenu: boolean = false;
 	let clientX: number;
@@ -66,7 +67,13 @@
 					<Edit3Icon size="20" />
 					<span class="pl-3">Rename</span>
 				</div>
-				<div class="menu-item">
+				<div
+					class="menu-item"
+					on:click={() => {
+						remove();
+						closeMenu();
+					}}
+				>
 					<DeleteIcon size="20" />
 					<span class="pl-3">Delete</span>
 				</div>

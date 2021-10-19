@@ -10,7 +10,7 @@ import type { MarkdownFile } from 'src/lib/types/markdownfile';
 import type { Folder } from 'src/lib/types/folder';
 import type { FileStructure } from 'src/lib/types/filestructure';
 
-export function rename(name: string) {
+export function remove() {
 	const _files: FileStructure = get(files);
 	const selectedKey: string = get(contextmenuSelectedNote);
 	const pathToSelectedItem: string = selectedKey ? findPath(_files, 'key', selectedKey) : '';
@@ -19,13 +19,26 @@ export function rename(name: string) {
 		: '';
 
 	if (selectedItem) {
-		const newNode = {
-			...selectedItem,
-			name
-		};
-		nestedProperty.set(_files, pathToSelectedItem, newNode);
+		// handle selection from base of file structure
+		if (!isNaN(Number(pathToSelectedItem))) {
+			files.set(_files.filter((node) => node.key !== selectedKey));
+			contextmenuSelectedNote.set('');
+			return;
+		}
 
+		// handle selected
+		const pathToParentFolder: string = pathToSelectedItem.substring(
+			0,
+			pathToSelectedItem.lastIndexOf('.files')
+		);
+
+		const parentFolder: Folder = nestedProperty.get(_files, pathToParentFolder);
+
+		parentFolder.files = parentFolder.files.filter((node) => node.key !== selectedKey);
+
+		nestedProperty.set(_files, pathToParentFolder, parentFolder);
 		files.set(_files);
+
 		contextmenuSelectedNote.set('');
 		return;
 	}
