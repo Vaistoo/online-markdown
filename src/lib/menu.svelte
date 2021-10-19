@@ -3,7 +3,6 @@
 	import { fade } from 'svelte/transition';
 	import { FilePlusIcon, DeleteIcon, Edit3Icon, FolderPlusIcon } from 'svelte-feather-icons';
 	import clickOutside from 'svelte-outside-click';
-
 	import { contextmenuSelectedNote } from './store/contextmenuSelectedNote';
 	import { renameSelectedNote } from './store/renameSelectedNote';
 	import { addNote, addFolder } from './helpers/file-structure/add';

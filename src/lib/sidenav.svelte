@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Filestructure from './filestructure.svelte';
-
 	import Menu from './menu.svelte';
 
 	let resize: boolean = false;

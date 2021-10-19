@@ -1,10 +1,8 @@
 <script lang="ts">
 	import File from './file.svelte';
 	import Folder from './folder.svelte';
-
 	import contextmenuOutside from './helpers/contextMenuOutside';
 	import { contextmenuSelectedNote } from './store/contextmenuSelectedNote';
-
 	import { files } from './store/files';
 </script>
 
