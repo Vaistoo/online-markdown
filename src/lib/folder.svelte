@@ -20,7 +20,11 @@
 
 <div>
 	{#if expanded}
-		<span on:click={toggle} on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}>
+		<span
+			class="py-1 pl-2 hover:bg-zinc-700"
+			on:click={toggle}
+			on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}
+		>
 			<FolderMinusIcon size={$iconSize} />
 			<span class="folder-name">{folder.name}</span>
 		</span>
@@ -37,7 +41,11 @@
 			{/each}
 		</ul>
 	{:else}
-		<span on:click={toggle} on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}>
+		<span
+			class="py-1 pl-2 hover:bg-zinc-700"
+			on:click={toggle}
+			on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}
+		>
 			<FolderPlusIcon size={$iconSize} />
 			<span class="folder-name">{folder.name}</span>
 		</span>
@@ -58,6 +66,6 @@
 	}
 
 	li {
-		@apply py-1 truncate select-none;
+		@apply truncate select-none;
 	}
 </style>

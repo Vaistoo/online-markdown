@@ -26,7 +26,7 @@
 
 <div class="flex" on:contextmenu|preventDefault={() => (showMenu = true)}>
 	<div
-		class="bg-zinc-800 overflow-x-hidden pt-5 pl-5 flex flex-col min-w-[10em] max-w-md"
+		class="bg-zinc-800 overflow-x-hidden flex flex-col min-w-[10em] max-w-md"
 		style="width: {size}px"
 	>
 		<Filestructure />

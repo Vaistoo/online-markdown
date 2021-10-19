@@ -16,7 +16,7 @@
 
 <span
 	class:selected={file.key === $selectedNote?.key}
-	class="flex items-center align-middle hover:underline"
+	class="py-1 pl-2 flex items-center align-middle hover:bg-zinc-700"
 	on:click={() => select(file)}
 	on:contextmenu={() => contextmenuSelectedNote.set(file.key)}
 >
@@ -30,6 +30,6 @@
 	}
 
 	.selected {
-		@apply underline;
+		@apply bg-zinc-600;
 	}
 </style>

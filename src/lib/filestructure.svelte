@@ -22,10 +22,10 @@
 
 <style lang="postcss">
 	ul {
-		@apply truncate ml-2 list-none select-none cursor-pointer;
+		@apply truncate list-none select-none cursor-pointer;
 	}
 
 	li {
-		@apply py-1 truncate select-none;
+		@apply truncate select-none;
 	}
 </style>

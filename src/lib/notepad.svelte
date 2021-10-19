@@ -88,7 +88,7 @@
 		on:mousedown={() => (resize = true)}
 	>
 		<div
-			class="markdown-body cursor-default"
+			class="markdown-body cursor-text"
 			bind:this={renderArea}
 			on:click={focusEditor}
 			on:mousedown|stopPropagation
