@@ -95,6 +95,7 @@
 		<textarea
 			class="cursor-text"
 			style="height: calc(100% - 2.5em); width: {size}px"
+			on:mousedown|stopPropagation
 			bind:this={editor}
 			bind:value={md}
 		/>

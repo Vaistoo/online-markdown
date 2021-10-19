@@ -1,4 +1,11 @@
 /* Write your global styles here, in PostCSS syntax */
 @tailwind base;
+
+@layer base {
+	.markdown-body > * {
+		all: revert;
+	}
+}
+
 @tailwind components;
 @tailwind utilities;
