@@ -5,6 +5,9 @@
 	.markdown-body > * {
 		all: revert;
 	}
+	.emoji {
+		@apply text-5xl;
+	}
 }
 
 @tailwind components;

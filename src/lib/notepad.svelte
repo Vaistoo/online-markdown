@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import MarkdownIt from 'markdown-it';
+	import emoji from 'markdown-it-emoji';
 	import hljs from 'highlight.js';
 	import 'highlight.js/styles/a11y-dark.css';
 	import './styles/github-markdown-css.css';
@@ -46,7 +47,9 @@
 
 					return ''; // use external default escaping
 				}
-			});
+			}).use(emoji);
+			_.renderer.rules.emoji = (token, idx) => `<span class="emoji">${token[idx].content}</span>`;
+
 			renderArea.innerHTML = _.render(md);
 		}
 	}
