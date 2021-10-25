@@ -24,7 +24,7 @@
 			md = x?.md;
 		});
 
-		editor.addEventListener('focusout', (event) => {
+		editor.addEventListener('focusout', () => {
 			if ($selectedNote) {
 				updateNote($selectedNote.key, md);
 			}
@@ -49,12 +49,6 @@
 			_.renderer.rules.emoji = (token, idx) => `<span class="emoji">${token[idx].content}</span>`;
 
 			renderArea.innerHTML = _.render(md);
-		}
-	}
-
-	function focusEditor() {
-		if (mounted) {
-			editor.focus();
 		}
 	}
 
