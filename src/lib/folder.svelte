@@ -25,9 +25,9 @@
 		on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}
 	>
 		{#if expanded}
-			<FolderMinusIcon size={$iconSize} />
+			<FolderMinusIcon size={$iconSize} class="min-w-max" />
 		{:else}
-			<FolderPlusIcon size={$iconSize} />
+			<FolderPlusIcon size={$iconSize} class="min-w-max" />
 		{/if}
 
 		<Rename bind:rename key={folder.key} />

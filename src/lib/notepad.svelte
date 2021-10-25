@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 	import MarkdownIt from 'markdown-it';
 	import emoji from 'markdown-it-emoji';
 	import hljs from 'highlight.js';
@@ -29,10 +29,6 @@
 		});
 
 		initResize();
-	});
-
-	onDestroy(() => {
-		editor.removeEventListener('focusout', () => {});
 	});
 
 	function render(md) {
@@ -82,7 +78,7 @@
 	}
 </script>
 
-<div class="flex fex-col w-full bg-zinc-900 justify-center p-5">
+<div class="flex fex-col w-screen bg-zinc-900 justify-center p-5">
 	<div
 		class="rounded-lg shadow-xl flex fex-col justify-center bg-zinc-500 px-2"
 		style="cursor: w-resize"
@@ -97,7 +93,7 @@
 		/>
 		<textarea
 			class="cursor-text"
-			style="height: calc(100% - 2.5em); width: {size}px"
+			style="width: {size}px"
 			on:mousedown|stopPropagation
 			bind:this={editor}
 			bind:value={md}

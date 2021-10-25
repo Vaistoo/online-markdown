@@ -32,12 +32,12 @@
 	}
 </script>
 
-<div class="flex z-[1000]" on:contextmenu|preventDefault={() => (showMenu = true)}>
+<div class="flex fixed h-screen z-[1000]" on:contextmenu|preventDefault={() => (showMenu = true)}>
 	<div class="bg-zinc-800 overflow-x-hidden flex flex-col max-w-md" style="width: {size}px">
 		<Filestructure />
 	</div>
 	<div class="w-2 bg-zinc-500" style="cursor: w-resize" on:mousedown={() => (resize = true)} />
-	<button class="sticky h-10 w-8 rounded-br-lg bg-zinc-500" on:click={() => toggleSideNav()}>
+	<button class="h-10 w-8 rounded-br-lg bg-zinc-500" on:click={() => toggleSideNav()}>
 		{#if size === 0}
 			<ChevronRightIcon size="25" />
 		{:else}

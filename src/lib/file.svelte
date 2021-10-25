@@ -21,7 +21,7 @@
 	on:click={() => select(file)}
 	on:contextmenu={() => contextmenuSelectedNote.set(file.key)}
 >
-	<FileTextIcon size={$iconSize} />
+	<FileTextIcon size={$iconSize} class="min-w-max" />
 
 	<Rename bind:rename key={file.key} />
 	{#if !rename}
