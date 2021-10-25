@@ -56,7 +56,7 @@
 
 <button
 	class="absolute h-10 w-8 rounded-br-lg bg-zinc-500"
-	style="transform: translateX({size > 0 ? size : 0}px)"
+	style="transform: translateX({size > 0 ? size + 5 : 5}px)"
 	on:click={() => toggleSideNav()}
 >
 	{#if size === 0}
