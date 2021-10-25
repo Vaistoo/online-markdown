@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import clickOutside from 'svelte-outside-click';
 	import MarkdownIt from 'markdown-it';
 	import emoji from 'markdown-it-emoji';
 	import hljs from 'highlight.js';
@@ -7,6 +8,7 @@
 	import './styles/github-markdown-css.css';
 	import { selectedNote } from './store/selectedNote';
 	import { updateNote } from './helpers/updateNote';
+	import { sidenavState } from './store/sidenav';
 
 	let mounted: boolean = false;
 
@@ -76,36 +78,45 @@
 			});
 		});
 	}
+
+	let showEditor: boolean = false;
 </script>
 
 <div class="flex fex-col w-screen bg-zinc-900 justify-center p-5">
+	<div class="transition-all bg-red-600 block {$sidenavState ? 'ml-40' : ''}" />
 	<div
-		class="rounded-lg shadow-xl flex fex-col justify-center bg-zinc-500 px-2"
+		class="rounded-l-lg resize-toggle"
 		style="cursor: w-resize"
 		on:mousedown={() => (resize = true)}
-	>
-		<div
-			class="markdown-body cursor-text"
-			bind:this={renderArea}
-			on:click={focusEditor}
-			on:mousedown|stopPropagation
-			style="width: {size}px"
-		/>
-		<textarea
-			class="cursor-text"
-			style="width: {size}px"
-			on:mousedown|stopPropagation
-			bind:this={editor}
-			bind:value={md}
-		/>
-	</div>
+	/>
+	<div
+		class="markdown-body cursor-text select-none"
+		style="display: {showEditor === false ? 'block' : 'none'}; width: {size}px"
+		on:click|stopPropagation={() => (showEditor = true)}
+		bind:this={renderArea}
+	/>
+	<textarea
+		class="markdown-body cursor-text"
+		style="display: {showEditor === true ? 'block' : 'none'}; width: {size}px"
+		use:clickOutside={() => (showEditor = false)}
+		bind:value={md}
+		bind:this={editor}
+	/>
+	<div
+		class="rounded-r-lg resize-toggle"
+		style="cursor: w-resize"
+		on:mousedown={() => (resize = true)}
+	/>
 </div>
 
 <style lang="postcss">
 	textarea {
-		@apply p-5 overflow-auto absolute z-0 resize-none bg-transparent text-transparent outline-none focus:bg-zinc-800 focus:text-gray-50 focus:z-20;
+		@apply resize-none outline-none;
 	}
 	.markdown-body {
-		@apply p-5 overflow-auto bg-zinc-800 h-full z-10 select-none;
+		@apply p-5 overflow-auto bg-zinc-800 h-full max-w-[80%];
+	}
+	.resize-toggle {
+		@apply shadow-xl justify-center bg-zinc-500 p-1;
 	}
 </style>
