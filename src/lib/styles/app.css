@@ -12,3 +12,8 @@
 
 @tailwind components;
 @tailwind utilities;
+
+/* safari bug - should change icon library to fix this...  */
+.feather {
+	width: auto !important;
+}
