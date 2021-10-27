@@ -104,6 +104,13 @@
 </div>
 
 <style lang="postcss">
+	:global(.markdown-body > *) {
+		all: revert;
+	}
+	:global(.emoji) {
+		@apply text-5xl;
+	}
+
 	textarea {
 		@apply resize-none outline-none;
 	}

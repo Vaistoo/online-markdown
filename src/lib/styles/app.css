@@ -1,15 +1,5 @@
 /* Write your global styles here, in PostCSS syntax */
 @tailwind base;
-
-@layer base {
-	.markdown-body > * {
-		all: revert;
-	}
-	.emoji {
-		@apply text-5xl;
-	}
-}
-
 @tailwind components;
 @tailwind utilities;
 
