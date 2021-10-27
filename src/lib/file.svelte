@@ -17,7 +17,7 @@
 
 <span
 	class:selected={file.key === $selectedNote?.key}
-	class="py-1 pl-2 flex items-center align-middle hover:bg-zinc-700"
+	class="file-button"
 	on:click={() => select(file)}
 	on:contextmenu={() => contextmenuSelectedNote.set(file.key)}
 >
@@ -30,6 +30,10 @@
 </span>
 
 <style lang="postcss">
+	.file-button {
+		@apply py-1 pl-2 flex items-center align-middle hover:bg-zinc-700;
+		@apply h-16 sm:h-auto;
+	}
 	.filename {
 		@apply pl-1;
 	}

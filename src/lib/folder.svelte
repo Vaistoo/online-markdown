@@ -20,7 +20,7 @@
 
 <div>
 	<span
-		class="py-1 pl-2 hover:bg-zinc-700"
+		class="folder-button"
 		on:click={toggle}
 		on:contextmenu={() => contextmenuSelectedNote.set(folder.key)}
 	>
@@ -52,6 +52,10 @@
 </div>
 
 <style lang="postcss">
+	.folder-button {
+		@apply py-1 pl-2 hover:bg-zinc-700;
+		@apply h-16 sm:h-auto;
+	}
 	.folder-name {
 		@apply pl-2;
 	}

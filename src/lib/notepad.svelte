@@ -9,6 +9,7 @@
 	import { selectedNote } from './store/selectedNote';
 	import { updateNote } from './helpers/updateNote';
 	import { sidenavState } from './store/sidenav';
+	import StopEditing from './stopediting.svelte';
 
 	let mounted: boolean = false;
 
@@ -76,8 +77,8 @@
 	let showEditor: boolean = false;
 </script>
 
-<div class="flex fex-col w-screen bg-zinc-900 justify-center p-5">
-	<div class="transition-all bg-red-600 block {$sidenavState ? 'ml-40' : ''}" />
+<div class="flex fex-col w-screen bg-zinc-900 justify-center sm:p-5">
+	<div class="transition-all bg-red-600 block {$sidenavState ? 'sm:ml-40' : ''}" />
 	<div
 		class="rounded-l-lg resize-toggle"
 		style="cursor: w-resize"
@@ -103,6 +104,8 @@
 	/>
 </div>
 
+<StopEditing editing={showEditor} />
+
 <style lang="postcss">
 	:global(.markdown-body > *) {
 		all: revert;
@@ -115,9 +118,11 @@
 		@apply resize-none outline-none;
 	}
 	.markdown-body {
-		@apply p-5 overflow-auto bg-zinc-800 h-full max-w-[80%];
+		@apply overflow-auto bg-zinc-800 h-full;
+		@apply p-4 sm:p-5 sm:max-w-[80%];
 	}
 	.resize-toggle {
 		@apply shadow-xl justify-center bg-zinc-500 p-1;
+		@apply hidden sm:block;
 	}
 </style>
