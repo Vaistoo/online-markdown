@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+	@apply bg-zinc-900 !important;
+}
+
 /* safari bug - should change icon library to fix this...  */
 .feather {
 	width: auto !important;

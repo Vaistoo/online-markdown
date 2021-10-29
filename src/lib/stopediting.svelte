@@ -12,6 +12,6 @@
 <style lang="postcss">
 	.stop-editing-button {
 		@apply bg-green-400 text-gray-900 py-5 rounded-lg shadow-2xl;
-		@apply w-[80%] sm:w-48 block sm:hidden;
+		@apply w-[80%] block sm:hidden;
 	}
 </style>

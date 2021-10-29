@@ -3,7 +3,7 @@
 	import Notepad from './lib/notepad.svelte';
 </script>
 
-<main class="flex h-screen text-gray-50 bg-zinc-900">
+<main class="flex h-screen text-gray-50">
 	<Sidenav />
 	<Notepad />
 </main>
