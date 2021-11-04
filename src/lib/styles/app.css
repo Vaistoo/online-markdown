@@ -4,10 +4,14 @@
 @tailwind utilities;
 
 html {
-	@apply bg-zinc-900 !important;
+	@apply bg-zinc-800 sm:bg-zinc-900 !important;
 }
 
 /* safari bug - should change icon library to fix this...  */
 .feather {
 	width: auto !important;
+}
+
+.icon {
+	@apply px-4 !important;
 }

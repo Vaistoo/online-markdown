@@ -77,7 +77,7 @@
 	let showEditor: boolean = false;
 </script>
 
-<div class="flex fex-col w-screen justify-center sm:p-5">
+<div class="flex fex-col w-screen justify-center sm:p-5 mt-16 sm:mt-0">
 	<div class="transition-all block {$sidenavState ? 'sm:ml-40' : ''}" />
 	<div
 		class="rounded-l-lg resize-toggle"

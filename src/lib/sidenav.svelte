@@ -1,8 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ChevronRightIcon, ChevronLeftIcon } from 'svelte-feather-icons';
+	import {
+		ChevronRightIcon,
+		ChevronLeftIcon,
+		FolderPlusIcon,
+		FilePlusIcon
+	} from 'svelte-feather-icons';
 	import Filestructure from './filestructure.svelte';
 	import Menu from './menu.svelte';
+	import { iconSize } from './store/iconSize';
 	import { sidenavState } from './store/sidenav';
 
 	let resize: boolean = false;
@@ -48,8 +54,22 @@
 </script>
 
 <div class="flex fixed h-screen z-[1000]" on:contextmenu|preventDefault={() => (showMenu = true)}>
-	<div class="bg-zinc-800 overflow-x-hidden flex flex-col max-w-md" style="width: {size}px">
+	<div
+		class="bg-zinc-800 overflow-x-hidden flex flex-col justify-between max-w-md"
+		style="width: {size}px"
+	>
 		<Filestructure />
+
+		<div class="sm:hidden flex flex-col items-center justify-center py-4 mx-4">
+			<button class="add-node-button mb-4">
+				<FolderPlusIcon size={$iconSize} class="icon" />
+				add folder
+			</button>
+			<button class="add-node-button">
+				<FilePlusIcon size={$iconSize} class="icon" />
+				add file
+			</button>
+		</div>
 	</div>
 	<div class="resize-toggle" style="cursor: w-resize" on:mousedown={() => (resize = true)} />
 </div>
@@ -73,7 +93,12 @@
 		@apply w-2 bg-zinc-500;
 	}
 	.open-sidenav-button {
-		@apply absolute flex items-center justify-center rounded-br-lg bg-zinc-500;
-		@apply h-20 sm:h-10 w-20 sm:w-8;
+		@apply fixed flex items-center justify-center bg-zinc-500;
+		@apply h-14 sm:h-10 w-14 sm:w-8 rounded-br-lg;
+	}
+	.add-node-button {
+		@apply bg-orange-800 hover:bg-orange-700;
+		@apply flex items-center w-full;
+		@apply rounded-lg py-4 shadow-xl;
 	}
 </style>
