@@ -1,103 +1,137 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import clickOutside from 'svelte-outside-click';
-	import MarkdownIt from 'markdown-it';
-	import emoji from 'markdown-it-emoji';
-	import taskLists from 'markdown-it-task-lists';
-	import footnote from 'markdown-it-footnote';
-	import sub from 'markdown-it-sub';
-	import sup from 'markdown-it-sup';
-	import mark from 'markdown-it-mark';
-	import deflist from 'markdown-it-deflist';
-	import abbr from 'markdown-it-abbr';
-	import container from 'markdown-it-container';
-	import hljs from 'highlight.js';
-	import 'highlight.js/styles/a11y-dark.css';
-	import './styles/github-markdown-css.css';
-	import { selectedNote } from './store/selectedNote';
-	import { updateNote } from './helpers/updateNote';
-	import { sidenavState } from './store/sidenav';
-	import StopEditing from './stopediting.svelte';
+    // Add type declarations
+    declare module 'markdown-it-task-lists' {
+        import MarkdownIt from 'markdown-it';
+        export default function taskLists(md: MarkdownIt): void;
+    }
+    declare module 'markdown-it-footnote' {
+        import MarkdownIt from 'markdown-it';
+        export default function footnote(md: MarkdownIt): void;
+    }
+    declare module 'markdown-it-sub' {
+        import MarkdownIt from 'markdown-it';
+        export default function sub(md: MarkdownIt): void;
+    }
+    declare module 'markdown-it-sup' {
+        import MarkdownIt from 'markdown-it';
+        export default function sup(md: MarkdownIt): void;
+    }
+    declare module 'markdown-it-mark' {
+        import MarkdownIt from 'markdown-it';
+        export default function mark(md: MarkdownIt): void;
+    }
+    declare module 'markdown-it-deflist' {
+        import MarkdownIt from 'markdown-it';
+        export default function deflist(md: MarkdownIt): void;
+    }
+    declare module 'markdown-it-abbr' {
+        import MarkdownIt from 'markdown-it';
+        export default function abbr(md: MarkdownIt): void;
+    }
+    declare module 'markdown-it-container' {
+        import MarkdownIt from 'markdown-it';
+        export default function container(md: MarkdownIt): void;
+    }
 
-	let mounted: boolean = false;
+    import { onMount } from 'svelte';
+    import clickOutside from 'svelte-outside-click';
+    import MarkdownIt from 'markdown-it';
+    import emoji from 'markdown-it-emoji';
+    import taskLists from 'markdown-it-task-lists';
+    import footnote from 'markdown-it-footnote';
+    import sub from 'markdown-it-sub';
+    import sup from 'markdown-it-sup';
+    import mark from 'markdown-it-mark';
+    import deflist from 'markdown-it-deflist';
+    import abbr from 'markdown-it-abbr';
+    import container from 'markdown-it-container';
+    import hljs from 'highlight.js';
+    import 'highlight.js/styles/a11y-dark.css';
+    import './styles/github-markdown-css.css';
+    import { selectedNote } from './store/selectedNote';
+    import { updateNote } from './helpers/updateNote';
+    import { sidenavState } from './store/sidenav';
+    import StopEditing from './stopediting.svelte';
 
-	let renderArea: HTMLDivElement;
-	let editor: HTMLTextAreaElement;
+    let mounted: boolean = false;
 
-	let md: string;
+    let renderArea: HTMLDivElement;
+    let editor: HTMLTextAreaElement;
 
-	onMount(() => {
-		mounted = true;
+    let md: string;
 
-		selectedNote.subscribe((x) => {
-			md = x?.md;
-		});
+    onMount(() => {
+        mounted = true;
 
-		editor.addEventListener('focusout', () => {
-			if ($selectedNote) {
-				updateNote($selectedNote.key, md);
-			}
-		});
+        selectedNote.subscribe((x) => {
+            md = x?.md;
+        });
 
-		initResize();
-	});
+        editor.addEventListener('focusout', () => {
+            if ($selectedNote) {
+                updateNote($selectedNote.key, md);
+            }
+        });
 
-	function render(md) {
-		if (mounted) {
-			const _ = MarkdownIt('default', {
-				html: true,           
-				xhtmlOut: true,       
-				breaks: true,         
-				linkify: true,        
-				typographer: true,    
-				quotes: '""''',      
-				highlight: function (str, lang) {
-					if (lang && hljs.getLanguage(lang)) {
-						try {
-							return hljs.highlight(str, { language: lang }).value;
-						} catch (e) {}
-					}
-					return ''; 
-				}
-			})
-			.use(emoji)
-			.use(taskLists)
-			.use(footnote)
-			.use(sub)
-			.use(sup)
-			.use(mark)
-			.use(deflist)
-			.use(abbr)
-			.use(container);
+        initResize();
+    });
 
-			_.renderer.rules.emoji = (token, idx) => `<span class="emoji">${token[idx].content}</span>`;
+    function render(md) {
+        if (mounted) {
+            const _ = MarkdownIt('default', {
+                html: true,           
+                xhtmlOut: true,       
+                breaks: true,         
+                linkify: true,        
+                typographer: true,    
+                quotes: '""''',      
+                highlight: function (str, lang) {
+                    if (lang && hljs.getLanguage(lang)) {
+                        try {
+                            return hljs.highlight(str, { language: lang }).value;
+                        } catch (e) {}
+                    }
+                    return ''; 
+                }
+            })
+            .use(emoji)
+            .use(taskLists)
+            .use(footnote)
+            .use(sub)
+            .use(sup)
+            .use(mark)
+            .use(deflist)
+            .use(abbr)
+            .use(container);
 
-			renderArea.innerHTML = _.render(md);
-		}
-	}
+            _.renderer.rules.emoji = (token, idx) => `<span class="emoji">${token[idx].content}</span>`;
 
-	$: render(md);
+            renderArea.innerHTML = _.render(md);
+        }
+    }
 
-	let resize: boolean = false;
-	let size: number = 600;
+    $: render(md);
 
-	function initResize() {
-		addEventListener('mousemove', (e) => {
-			if (!resize) return;
+    let resize: boolean = false;
+    let size: number = 600;
 
-			const centerX: number = renderArea.offsetLeft + renderArea.offsetWidth / 2;
+    function initResize() {
+        addEventListener('mousemove', (e) => {
+            if (!resize) return;
 
-			requestAnimationFrame(() => {
-				size = size / 2 + Math.abs(e.clientX - centerX);
-			});
+            const centerX: number = renderArea.offsetLeft + renderArea.offsetWidth / 2;
 
-			addEventListener('mouseup', () => {
-				resize = false;
-			});
-		});
-	}
+            requestAnimationFrame(() => {
+                size = size / 2 + Math.abs(e.clientX - centerX);
+            });
 
-	let showEditor: boolean = false;
+            addEventListener('mouseup', () => {
+                resize = false;
+            });
+        });
+    }
+
+    let showEditor: boolean = false;
 </script>
 
 <div class="flex fex-col w-screen justify-center sm:p-5 mt-16 sm:mt-0">
