@@ -76,7 +76,7 @@
         initResize();
     });
 
-    function render(md) {
+    function render(md: string) {
         if (mounted) {
             const _ = MarkdownIt('default', {
                 html: true,           
