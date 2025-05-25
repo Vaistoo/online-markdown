@@ -3,6 +3,14 @@
 	import clickOutside from 'svelte-outside-click';
 	import MarkdownIt from 'markdown-it';
 	import emoji from 'markdown-it-emoji';
+	import taskLists from 'markdown-it-task-lists';
+	import footnote from 'markdown-it-footnote';
+	import sub from 'markdown-it-sub';
+	import sup from 'markdown-it-sup';
+	import mark from 'markdown-it-mark';
+	import deflist from 'markdown-it-deflist';
+	import abbr from 'markdown-it-abbr';
+	import container from 'markdown-it-container';
 	import hljs from 'highlight.js';
 	import 'highlight.js/styles/a11y-dark.css';
 	import './styles/github-markdown-css.css';
@@ -36,17 +44,32 @@
 
 	function render(md) {
 		if (mounted) {
-			const _ = MarkdownIt('commonmark', {
+			const _ = MarkdownIt('default', {
+				html: true,           
+				xhtmlOut: true,       
+				breaks: true,         
+				linkify: true,        
+				typographer: true,    
+				quotes: '""''',      
 				highlight: function (str, lang) {
 					if (lang && hljs.getLanguage(lang)) {
 						try {
 							return hljs.highlight(str, { language: lang }).value;
 						} catch (e) {}
 					}
-
-					return ''; // use external default escaping
+					return ''; 
 				}
-			}).use(emoji);
+			})
+			.use(emoji)
+			.use(taskLists)
+			.use(footnote)
+			.use(sub)
+			.use(sup)
+			.use(mark)
+			.use(deflist)
+			.use(abbr)
+			.use(container);
+
 			_.renderer.rules.emoji = (token, idx) => `<span class="emoji">${token[idx].content}</span>`;
 
 			renderArea.innerHTML = _.render(md);
